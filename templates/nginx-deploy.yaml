@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: SatefulSet
+metadata:
+  name: {{ .Chart.Name }}-deployment
+  namespace: default
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      stage: dev
+  template:
+    metadata:
+      labels:
+        stage: dev
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-dev
+        image: {{ .Chart.Name }}
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+        resources:
+          requests:
+            memory: 100Mi
+            cpu:  500Mi
+          limits:
+            memory: 200Mi
+            cpu: 700Mi
+volumeClaimTemplates:
+- metadata:
+    name: www
+  spec:
+    accessModes: ["ReaWriteOnce"]
+    resources:
+      requests:
+        storage: 500Mi

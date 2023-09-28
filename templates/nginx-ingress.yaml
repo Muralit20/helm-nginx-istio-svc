@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: nginx-gateway-dev
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts: "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nginx-vs-dev
+spec:
+  hosts: "*"
+  gateways:
+  - nginx-gateway-dev
+  http:
+  - route:
+    - destination:
+        host: nginx-svc-dev.default.svc.cluster.local
+        port:
+          number: 80

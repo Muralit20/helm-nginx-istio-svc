@@ -1,0 +1,8 @@
+replicaCount: 2
+name: nginx
+hosturl: "*"
+nginxGwPort: 80
+containerport: 80
+imagePullPolicy: Always
+persistence:
+  enabled: false
